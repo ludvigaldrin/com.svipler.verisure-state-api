@@ -10,14 +10,14 @@ class Alarm {
 
   init() {
     const verisure = new Verisure(this.alarmUser, this.alarmPassword);
-    console.log("Starting Versiure: Init...");
+    console.log("Starting Versiure...");
 
     verisure
       .getToken()
       .then(() => verisure.getInstallations())
       .then((installations) => {
         this.installation = installations[0];
-        console.log("Done");
+        console.log("Starting Versiure...Done");
       })
       .catch((error) => {
         console.error(error);

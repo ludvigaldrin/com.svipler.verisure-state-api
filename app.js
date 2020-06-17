@@ -1,5 +1,5 @@
 const Alarm = require("./Alarm");
-var config = require('./config.json');
+var config = require("./config.json");
 
 var alarm = new Alarm(config.username, config.password, config.code);
 
@@ -17,13 +17,47 @@ app.get("/state", (request, response) => {
 });
 
 app.get("/overview", (request, response) => {
-    if (alarm.installation == null) response.send("Failed with init!");
-    else {
-        alarm.getCurrentInstallation(function (data) {
-            response.json(data);
-          });
-    }
-  });
+  if (alarm.installation == null) response.send("Failed with init!");
+  else {
+    alarm.getCurrentInstallation(function (data) {
+      response.json(data);
+    });
+  }
+});
+
+app.get("/", (request, response) => {
+  if (alarm.installation == null) response.send("Failed with init!");
+  else {
+    response.send("Versiure State API started");
+  }
+});
+
+app.get("/state/arm", (request, response) => {
+  if (alarm.installation == null) response.send("Failed with init!");
+  else {
+    alarm.setTargetAlarmState("ARMED_AWAY", function (data) {
+      response.send("ARMED_AWAY");
+    });
+  }
+});
+
+app.get("/state/disarm", (request, response) => {
+  if (alarm.installation == null) response.send("Failed with init!");
+  else {
+    alarm.setTargetAlarmState("DISARMED", function (data) {
+      response.send("DISARMED");
+    });
+  }
+});
+
+app.get("/state/away", (request, response) => {
+  if (alarm.installation == null) response.send("Failed with init!");
+  else {
+    alarm.setTargetAlarmState("ARMED_HOME", function (data) {
+      response.send("ARMED_HOME");
+    });
+  }
+});
 
 app.listen(port, (err) => {
   if (err) {
@@ -33,4 +67,4 @@ app.listen(port, (err) => {
   console.log(`server is listening on ${port}`);
 });
 
-app.set('json spaces', 40);
+app.set("json spaces", 40);
