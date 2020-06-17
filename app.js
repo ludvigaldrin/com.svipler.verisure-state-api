@@ -50,7 +50,7 @@ app.get("/state/disarm", (request, response) => {
   }
 });
 
-app.get("/state/away", (request, response) => {
+app.get("/state/home", (request, response) => {
   if (alarm.installation == null) response.send("Failed with init!");
   else {
     alarm.setTargetAlarmState("ARMED_HOME", function (data) {
