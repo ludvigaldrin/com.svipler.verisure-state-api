@@ -5,7 +5,7 @@ var alarm = new Alarm(config.username, config.password, config.code);
 
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 3010;
 
 app.get("/state", (request, response) => {
   if (alarm.installation == null) response.send("Failed with init!");
