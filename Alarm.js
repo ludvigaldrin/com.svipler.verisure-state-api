@@ -58,8 +58,8 @@ class Alarm {
       .then(({ armStateChangeTransactionId }) =>
         this.resolveChangeResult(`/code/result/${armStateChangeTransactionId}`)
       )
-      .then(() => {
-        callback(armStateChangeTransactionId);
+      .then((result) => {
+        callback(result);
       })
       .catch(callback);
   }
