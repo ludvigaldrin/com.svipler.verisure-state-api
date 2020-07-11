@@ -21,7 +21,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/state", (request, response) => {
-  console.log("/state: Start");
+  
+  console.log("/state: Start "+(new Date()).toISOString());
   if (alarm.installation == null) {
     console.log("/state: Init Failed");
     response.status(500);
@@ -41,14 +42,14 @@ app.get("/state", (request, response) => {
         response.send(data);
       } else {
         response.status(500);
-        response.send(data);
+        response.send("UNKOWN");
       }
     });
   }
 });
 
 app.get("/overview", (request, response) => {
-  console.log("/overview: Start");
+  console.log("/overview: Start "+(new Date()).toISOString());
   if (alarm.installation == null) {
     console.log("/overview: Init Failed");
     response.status(500);
@@ -69,7 +70,7 @@ app.get("/state/arm", (request, response) => {
     response.status(500);
     response.send("ERROR");
   } else {
-    console.log("/state/arm: Setting");
+    console.log("/state/arm: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("ARMED_AWAY", function (data) {
       console.log("/state/arm: Response: Received");
       if (data == "OK") {
@@ -96,7 +97,7 @@ app.get("/state/disarm", (request, response) => {
     response.status(500);
     response.send("ERROR");
   } else {
-    console.log("/state/disarm: Setting");
+    console.log("/state/disarm: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("DISARMED", function (data) {
       console.log("/state/disarm: Response: Received");
       if (data == "OK") {
@@ -123,7 +124,7 @@ app.get("/state/home", (request, response) => {
     response.status(500);
     response.send("ERROR");
   } else {
-    console.log("/state/home: Setting");
+    console.log("/state/home: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("ARMED_HOME", function (data) {
       console.log("/state/home: Response: Received");
       if (data == "OK") {
