@@ -11,7 +11,7 @@ app.get("/", (request, response) => {
   if (alarm.installation == null) {
     console.log("/: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/: Fetching");
     console.log("/: Response: Versiure State API started");
@@ -26,23 +26,23 @@ app.get("/state", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/state: Fetching");
     alarm.getCurrentAlarmState(function (data) {
       console.log("/state: Response: " + data);
       if (data == "DISARMED"){
         response.status(200);
-        response.send(data);
+        response.json(getJsonState(data,""));
       } else if (data == "ARMED_AWAY"){
-        response.status(201);
-        response.send(data);
+        response.status(200);
+        response.json(getJsonState(data,""));
       } else if (data == "ARMED_HOME"){
-        response.status(202);
-        response.send(data);
+        response.status(200);
+        response.json(getJsonState(data,""));
       } else {
         response.status(500);
-        response.send("UNKOWN");
+        response.json(getJsonState("ERROR",data));
       }
     });
   }
@@ -53,7 +53,7 @@ app.get("/overview", (request, response) => {
   if (alarm.installation == null) {
     console.log("/overview: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/overview: Fetching");
     alarm.getCurrentInstallation(function (data) {
@@ -68,7 +68,7 @@ app.get("/state/arm", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/arm: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/state/arm: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("ARMED_AWAY", function (data) {
@@ -76,16 +76,16 @@ app.get("/state/arm", (request, response) => {
       if (data == "OK") {
         console.log("/state/arm: Response: " + data);
         response.status(200);
-        response.send("ARMED_AWAY");
+        response.json(getJsonState("ARMED_AWAY","New State"));
       }
       else if (data['errorCode'] == 'VAL_00818') {
         console.log("/state/arm: Response: Already Set State");
         response.status(200);
-        response.send("ARMED_AWAY");
+        response.json(getJsonState("ARMED_AWAY","Current State"));
       } else {
         console.log("/state/arm: Response: " + data['errorGroup']+ ' <> ' + data['errorCode'] + ' <> ' + data['errorMessage']);
         response.status(500);
-        response.send("ERROR");
+        response.json(getJsonState("ERROR",data['errorMessage']));
       }
     });
   }
@@ -95,7 +95,7 @@ app.get("/state/disarm", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/disarm: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/state/disarm: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("DISARMED", function (data) {
@@ -103,16 +103,16 @@ app.get("/state/disarm", (request, response) => {
       if (data == "OK") {
         console.log("/state/disarm: Response: " + data);
         response.status(200);
-        response.send("DISARMED");
+        response.json(getJsonState("DISARMED","New State"));
       }
       else if (data['errorCode'] == 'VAL_00818') {
         console.log("/state/disarm: Response: Already Set State");
         response.status(200);
-        response.send("DISARMED");
+        response.json(getJsonState("DISARMED","Current State"));
       } else {
         console.log("/state/disarm: Response: " + data['errorGroup']+ ' <> ' + data['errorCode'] + ' <> ' + data['errorMessage']);
         response.status(500);
-        response.send("ERROR");
+        response.json(getJsonState("ERROR",data['errorMessage']));
       }
     });
   }
@@ -122,7 +122,7 @@ app.get("/state/home", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/home: Init Failed");
     response.status(500);
-    response.send("ERROR");
+    response.json(getJsonState("ERROR","Init Failed"));
   } else {
     console.log("/state/home: Setting "+(new Date()).toISOString());
     alarm.setTargetAlarmState("ARMED_HOME", function (data) {
@@ -130,16 +130,16 @@ app.get("/state/home", (request, response) => {
       if (data == "OK") {
         console.log("/state/home: Response: " + data);
         response.status(200);
-        response.send("ARMED_HOME");
+        response.json(getJsonState("ARMED_HOME","New State"));
       }
       else if (data['errorCode'] == 'VAL_00818') {
         console.log("/state/home: Response: Already Set State");
         response.status(200);
-        response.send("ARMED_HOME");
+        response.json(getJsonState("ARMED_HOME","Current State"));
       } else {
         console.log("/state/home: Response: " + data['errorGroup']+ ' <> ' + data['errorCode'] + ' <> ' + data['errorMessage']);
         response.status(500);
-        response.send("ERROR");
+        response.json(getJsonState("ERROR",data['errorMessage']));
       }
     });
   }
@@ -154,3 +154,9 @@ app.listen(port, (err) => {
 });
 
 app.set("json spaces", 40);
+
+
+function getJsonState(state, message) {
+  json = '{"state":"'+ state +'","message:":"'+ message +'"}';
+  return JSON.parse(json);
+};

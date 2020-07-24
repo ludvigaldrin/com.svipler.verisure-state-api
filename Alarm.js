@@ -1,4 +1,5 @@
 const Verisure = require("verisure");
+const { json } = require("express");
 
 class Alarm {
   constructor(username, password, code) {
@@ -81,6 +82,8 @@ class Alarm {
   log(message) {
     return console.log(`${message}`);
   }
+
+  
 }
 
 module.exports = Alarm;
