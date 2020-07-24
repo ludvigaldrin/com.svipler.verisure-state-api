@@ -157,6 +157,6 @@ app.set("json spaces", 40);
 
 
 function getJsonState(state, message) {
-  json = '{"state":"'+ state +'","message:":"'+ message +'"}';
+  json = '{"state":"'+ state +'","message":"'+ message +'"}';
   return JSON.parse(json);
 };
