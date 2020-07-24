@@ -35,10 +35,10 @@ app.get("/state", (request, response) => {
         response.status(200);
         response.json(getJsonState(data,""));
       } else if (data == "ARMED_AWAY"){
-        response.status(200);
+        response.status(201);
         response.json(getJsonState(data,""));
       } else if (data == "ARMED_HOME"){
-        response.status(200);
+        response.status(202);
         response.json(getJsonState(data,""));
       } else {
         response.status(500);
