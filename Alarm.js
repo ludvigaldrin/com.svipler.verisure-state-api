@@ -2,14 +2,15 @@ const Verisure = require("verisure");
 const { json } = require("express");
 
 class Alarm {
-  constructor(username, password, code) {
+  constructor(username, password, code, lockSerial) {
     this.alarmUser = username;
     this.alarmPassword = password;
     this.alarmCode = code;
+    this.lockSerial = lockSerial;
     this.installation = null;
   }
 
-  init() {
+  init(callback) {
     const verisure = new Verisure(this.alarmUser, this.alarmPassword);
     console.log("Starting Versiure...");
 
@@ -19,9 +20,11 @@ class Alarm {
       .then((installations) => {
         this.installation = installations[0];
         console.log("Starting Versiure...Done");
+        callback();
       })
       .catch((error) => {
         console.error(error);
+        callback();
       });
   }
 
