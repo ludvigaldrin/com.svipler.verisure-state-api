@@ -2,7 +2,7 @@ const Alarm = require("./Alarm");
 const Lock = require("./Lock");
 var config = require("./config.json");
 
-var alarm = new Alarm(config.username, config.password, config.code, config.lockSerial);
+var alarm = new Alarm(config.username, config.password, config.code, config.lockserial);
 var lock;
 
 const express = require("express");
