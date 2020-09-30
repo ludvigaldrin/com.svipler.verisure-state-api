@@ -43,7 +43,7 @@ app.get("/state", (request, response) => {
         response.json(getJsonState(data, ""));
       } else {
         response.status(500);
-        response.json(getJsonState("ERROR", data));
+        response.json(getJsonState("ERROR", data["errorMessage"]));
       }
     });
   }
