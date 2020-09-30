@@ -31,7 +31,7 @@ app.get("/state", (request, response) => {
   } else {
     console.log("/state: Fetching");
     alarm.getCurrentAlarmState(function (data) {
-      console.log("/state: Response: " + data);
+      console.log("/state: Response: " + JSON.stringify(data));
       if (data == "DISARMED") {
         response.status(200);
         response.json(getJsonState(data, ""));
