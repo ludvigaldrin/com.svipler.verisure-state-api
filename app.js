@@ -12,6 +12,7 @@ const port = 3010;
 app.get("/", (request, response) => {
   if (alarm.installation == null) {
     console.log("/: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -26,6 +27,7 @@ app.get("/state", (request, response) => {
   console.log("/state: Start " + new Date().toISOString());
   if (alarm.installation == null) {
     console.log("/state: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -53,6 +55,7 @@ app.get("/overview", (request, response) => {
   console.log("/overview: Start " + new Date().toISOString());
   if (alarm.installation == null) {
     console.log("/overview: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -68,6 +71,7 @@ app.get("/overview", (request, response) => {
 app.get("/state/arm", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/arm: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -101,6 +105,7 @@ app.get("/state/arm", (request, response) => {
 app.get("/state/disarm", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/disarm: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -135,6 +140,7 @@ app.get("/state/disarm", (request, response) => {
 app.get("/state/home", (request, response) => {
   if (alarm.installation == null) {
     console.log("/state/home: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -169,6 +175,7 @@ app.get("/lock/state", (request, response) => {
   console.log("/lock/state: Start " + new Date().toISOString());
   if (alarm.installation == null) {
     console.log("/lock/state: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -198,6 +205,7 @@ app.get("/lock/state", (request, response) => {
 app.get("/lock/lock", (request, response) => {
   if (alarm.installation == null) {
     console.log("/lock/lock: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
@@ -231,6 +239,7 @@ app.get("/lock/lock", (request, response) => {
 app.get("/lock/unlock", (request, response) => {
   if (alarm.installation == null) {
     console.log("/lock/unlock: Init Failed");
+    initAlarm();
     response.status(500);
     response.json(getJsonState("ERROR", "Init Failed"));
   } else {
