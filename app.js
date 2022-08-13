@@ -115,7 +115,8 @@ app.get("/state/disarm", (request, response) => {
         console.log("/state/disarm: Response: Already Set State");
         response.status(200);
         response.json(getJsonState("DISARMED", "Current State"));
-      } else {
+      } else {  
+        console.log(data)
         console.log(
           "/state/disarm: Response: " +
             data["errorGroup"] +
