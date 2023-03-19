@@ -29,64 +29,114 @@ class Alarm {
   }
 
   getCurrentInstallation(callback) {
+    const request = {
+      operationName: 'ArmState',
+      variables: { giid: this.installation.giid },
+      query: `query ArmState($giid: String!) {
+        installation(giid: $giid) {
+          armState {
+            type
+            statusType
+            date
+            name
+            changedVia
+            __typename
+          }
+          __typename
+        }
+      }`,
+    }
+
     this.installation
-      .getOverview()
-      .then((overview) => {
-        callback(overview);
+      .client(request)
+      .then((result) => {
+        callback(result.installation);
       })
       .catch(callback);
   }
 
   getCurrentAlarmState(callback) {
+    const request = {
+      operationName: 'ArmState',
+      variables: { giid: this.installation.giid },
+      query: `query ArmState($giid: String!) {
+        installation(giid: $giid) {
+          armState {
+            type
+            statusType
+            date
+            name
+            changedVia
+            __typename
+          }
+          __typename
+        }
+      }`,
+    }
+
     this.installation
-      .getOverview()
-      .then((overview) => {
-        callback(overview.armState.statusType);
+      .client(request)
+      .then((result) => {
+        callback(result.installation.armState.statusType);
       })
       .catch(callback);
+  }
+
+  getArmQuery(value) {
+    switch (value) {
+      case "ARMED_AWAY":
+        return {
+          operationName: 'armAway',
+          variables: {
+            giid: this.installation.giid,
+            code: this.alarmCode
+          },
+          query: `
+          mutation armAway($giid: String!, $code: String!) {
+            armStateArmAway(giid: $giid, code: $code)
+          }`,
+        }
+      case "ARMED_HOME":
+        return {
+          operationName: 'armHome',
+          variables: {
+            giid: this.installation.giid,
+            code: this.alarmCode
+          },
+          query: `
+          mutation armHome($giid: String!, $code: String!) {
+            armStateArmHome(giid: $giid, code: $code)
+          }`,
+        }
+      case "DISARMED":
+        return {
+          operationName: 'disarm',
+          variables: {
+            giid: this.installation.giid,
+            code: this.alarmCode
+          },
+          query: `
+          mutation disarm($giid: String!, $code: String!) {
+            armStateDisarm(giid: $giid, code: $code)
+          }`,
+        }
+    }
   }
 
   setTargetAlarmState(value, callback) {
     this.log(`Setting target alarm state to: ${value}`);
 
-    const request = {
-      method: "PUT",
-      url: "/armstate/code",
-      data: {
-        code: this.alarmCode,
-        state: value,
-      },
-    };
     this.installation
-      .client(request)
-      .then(({ armStateChangeTransactionId }) =>
-        this.resolveChangeResult(`/code/result/${armStateChangeTransactionId}`)
-      )
+      .client(this.getArmQuery(value))
       .then((result) => {
+        console.log(result)
         callback(result);
       })
       .catch(callback);
   }
-
-  resolveChangeResult(url) {
-    this.log(`Resolving: ${url}`);
-
-    return this.installation.client({ url }).then(({ result }) => {
-      this.log(`Got "${result}" back from: ${url}`);
-      if (typeof result === "undefined" || result === "NO_DATA") {
-        return new Promise((resolve) =>
-          setTimeout(() => resolve(this.resolveChangeResult(url)), 200)
-        );
-      }
-      return result;
-    });
-  }
-
   log(message) {
     return console.log(`${message}`);
   }
-
-  
 }
 
 module.exports = Alarm;

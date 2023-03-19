@@ -78,26 +78,10 @@ app.get("/state/arm", (request, response) => {
     console.log("/state/arm: Setting " + new Date().toISOString());
     alarm.setTargetAlarmState("ARMED_AWAY", function (data) {
       console.log("/state/arm: Response: Received");
-      if (data == "OK") {
-        console.log("/state/arm: Response: " + data);
-        response.status(200);
-        response.json(getJsonState("ARMED_AWAY", "New State"));
-      } else if (data["errorCode"] == "VAL_00818") {
-        console.log("/state/arm: Response: Already Set State");
-        response.status(200);
-        response.json(getJsonState("ARMED_AWAY", "Current State"));
-      } else {
-        console.log(
-          "/state/arm: Response: " +
-            data["errorGroup"] +
-            " <> " +
-            data["errorCode"] +
-            " <> " +
-            data["errorMessage"]
-        );
-        response.status(500);
-        response.json(getJsonState("ERROR", data["errorMessage"]));
-      }
+
+      console.log(data)
+      response.status(200);
+      response.json(getJsonState("ARMED_AWAY", "New State"));
     });
   }
 });
@@ -112,28 +96,10 @@ app.get("/state/disarm", (request, response) => {
     console.log("/state/disarm: Setting " + new Date().toISOString());
     alarm.setTargetAlarmState("DISARMED", function (data) {
       console.log("/state/disarm: Response: Received");
-      if (data == "OK") {
-        console.log("/state/disarm: Response: " + data);
-        response.status(200);
-        response.json(getJsonState("DISARMED", "New State"));
-      } else if (data["errorCode"] == "VAL_00818") {
-        console.log("/state/disarm: Response: Already Set State");
-        response.status(200);
-        response.json(getJsonState("DISARMED", "Current State"));
-      } else {  
-        console.log(data)
-        console.log(
-          "/state/disarm: Response: " +
-            data["errorGroup"] +
-            " <> " +
-            data["errorCode"] +
-            " <> " +
-            data["errorMessage"]
-        );
-        response.status(500);
-        response.json(getJsonState("ERROR", data["errorMessage"]));
-      }
+      response.status(200);
+      response.json(getJsonState("DISARMED", data.armStateDisarm ? "New State" : "Current State"));
     });
+
   }
 });
 
@@ -147,30 +113,14 @@ app.get("/state/home", (request, response) => {
     console.log("/state/home: Setting " + new Date().toISOString());
     alarm.setTargetAlarmState("ARMED_HOME", function (data) {
       console.log("/state/home: Response: Received");
-      if (data == "OK") {
-        console.log("/state/home: Response: " + data);
-        response.status(200);
-        response.json(getJsonState("ARMED_HOME", "New State"));
-      } else if (data["errorCode"] == "VAL_00818") {
-        console.log("/state/home: Response: Already Set State");
-        response.status(200);
-        response.json(getJsonState("ARMED_HOME", "Current State"));
-      } else {
-        console.log(
-          "/state/home: Response: " +
-            data["errorGroup"] +
-            " <> " +
-            data["errorCode"] +
-            " <> " +
-            data["errorMessage"]
-        );
-        response.status(500);
-        response.json(getJsonState("ERROR", data["errorMessage"]));
-      }
+      console.log(data)
+      response.status(200);
+      response.json(getJsonState("ARMED_HOME", data.armStateArmHome ? "New State" : "Current State"));
     });
   }
 });
 
+/** 
 app.get("/lock/state", (request, response) => {
   console.log("/lock/state: Start " + new Date().toISOString());
   if (alarm.installation == null) {
@@ -223,11 +173,11 @@ app.get("/lock/lock", (request, response) => {
       } else {
         console.log(
           "/lock/lock: Response: " +
-            data["errorGroup"] +
-            " <> " +
-            data["errorCode"] +
-            " <> " +
-            data["errorMessage"]
+          data["errorGroup"] +
+          " <> " +
+          data["errorCode"] +
+          " <> " +
+          data["errorMessage"]
         );
         response.status(500);
         response.json(getJsonState("ERROR", data["errorMessage"]));
@@ -257,11 +207,11 @@ app.get("/lock/unlock", (request, response) => {
       } else {
         console.log(
           "/lock/unlock: Response: " +
-            data["errorGroup"] +
-            " <> " +
-            data["errorCode"] +
-            " <> " +
-            data["errorMessage"]
+          data["errorGroup"] +
+          " <> " +
+          data["errorCode"] +
+          " <> " +
+          data["errorMessage"]
         );
         response.status(500);
         response.json(getJsonState("ERROR", data["errorMessage"]));
@@ -269,6 +219,8 @@ app.get("/lock/unlock", (request, response) => {
     });
   }
 });
+
+*/
 
 app.listen(port, (err) => {
   if (err) {
