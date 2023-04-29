@@ -10,9 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "verisure": "^5.0.0"
+    "verisure": "^5.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.22"
   }
 }
