@@ -1,4 +1,5 @@
-class Lock {
+// NOT UPGRADED
+/**class Lock {
   constructor(alarm) {
     this.alarmCode = alarm.alarmCode;
     this.installation = alarm.installation;
@@ -32,7 +33,7 @@ class Lock {
       .catch(callback);
   }
 
-  /** 
+
   getTargetLockState(callback) {
     this.log('Getting target lock state.');
     this.getDoorLockState().then((doorLock) => {
@@ -43,7 +44,7 @@ class Lock {
       callback(null, targetLockState === 'LOCKED'
         ? "LOCKED" : "UNLOCKED");
     }).catch(callback);
-  }*/
+  }
 
   setTargetLockState(value, callback) {
     this.log(`Setting target lock state to: ${value}`);
@@ -87,3 +88,4 @@ class Lock {
 }
 
 module.exports = Lock;
+**/
