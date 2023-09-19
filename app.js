@@ -1,9 +1,9 @@
 const Alarm = require("./Alarm");
-const Lock = require("./Lock");
+//const Lock = require("./Lock");
 var config = require("./config.json");
 
 var alarm = new Alarm(config.username, config.password, config.code, config.lockserial);
-var lock;
+//var lock;
 
 const express = require("express");
 const app = express();
@@ -130,8 +130,8 @@ app.listen(port, (err) => {
 
 function initAlarm() {
   alarm.init(function (data) {
-    console.log("Setting up Lock...");
-    lock = new Lock(alarm);
+    //console.log("Setting up Lock...");
+    //lock = new Lock(alarm);
     console.log("done");
   });
 }
